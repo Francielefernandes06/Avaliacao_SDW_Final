@@ -47,7 +47,7 @@ $tipo_usuario = $_SESSION["usuario_tipo"];
 <body>
   <div class="container mt-5">
     <div class="mb-4 d-flex justify-content-between">
-      <h1 class="">Bem-vindo, <?php echo $_SESSION["usuario_nome"]; ?></h1>
+      <h1 class="">Bem-vindo(a), <?php echo $_SESSION["usuario_nome"]; ?></h1>
 
       <a href="../backend/logout.php" class="btn btn-danger btn-sm d-flex align-items-center">Logout <i class=" ms-2  fs-4 bi bi-box-arrow-right"></i></a>
     </div>

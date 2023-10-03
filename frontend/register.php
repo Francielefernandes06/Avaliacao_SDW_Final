@@ -1,3 +1,75 @@
+<?php
+$servername = "localhost"; // Nome do servidor MySQL
+$username = "root"; // Nome de usuário do MySQL
+$password = "123456789"; // Senha do MySQL
+$database = "praticaFinal"; // Nome do banco de dados
+
+// Conecte-se ao servidor MySQL
+$conn = new mysqli($servername, $username, $password);
+
+// Verifique a conexão
+if ($conn->connect_error) {
+  die("Falha na conexão com o banco de dados: " . $conn->connect_error);
+}
+
+// Crie um banco de dados chamado "praticaFinal"
+$sqlCreateDB = "CREATE DATABASE IF NOT EXISTS $database";
+
+if ($conn->query($sqlCreateDB) === TRUE) {
+  echo "Banco de dados criado com sucesso!";
+} else {
+  echo "Erro ao criar o banco de dados: " . $conn->error;
+}
+
+// Conecte-se ao banco de dados recém-criado
+$conn->close();
+$conn = new mysqli($servername, $username, $password, $database);
+
+// Verifique a conexão com o banco de dados
+if ($conn->connect_error) {
+  die("Falha na conexão com o banco de dados: " . $conn->connect_error);
+}
+
+// Crie as tabelas
+$sqlCreateTables = "
+-- Tabela de Usuários
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    tipo VARCHAR(5) NOT NULL, -- comum e admin
+    senha VARCHAR(255) NOT NULL
+);
+
+-- Tabela de Tipos de Produtos
+CREATE TABLE IF NOT EXISTS tipos_produtos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL
+);
+
+-- Tabela de Produtos
+CREATE TABLE IF NOT EXISTS produtos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    descricao TEXT,
+    preco DECIMAL(10, 2) NOT NULL,
+    tipo_id INT,
+    FOREIGN KEY (tipo_id) REFERENCES tipos_produtos(id)
+);
+";
+
+if ($conn->multi_query($sqlCreateTables)) {
+  echo "Tabelas criadas com sucesso!";
+} else {
+  echo "Erro ao criar tabelas: " . $conn->error;
+}
+
+// Feche a conexão com o servidor MySQL
+$conn->close();
+?>
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
